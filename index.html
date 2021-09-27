@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Set Tools</title>
+  <style type="text/css">
+
+    html {
+      font-size: 24px;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0;
+    }
+
+    #input, #output {
+      display: flex;
+    }
+
+    #input > div, #output > div {
+      margin: 0.5rem;
+    }
+
+    .overline {
+      text-decoration: overline;
+    }
+
+  </style>
+  <script type="text/javascript">
+
+    let setA;
+
+    function intersection(setA, setB) {
+      let intersection = new Set();
+      for (let elem of setB) {
+          if (setA.has(elem)) {
+              intersection.add(elem);
+          }
+      }
+      return intersection;
+    }
+
+    function difference(setA, setB) {
+      let difference = new Set(setA);
+      for (let elem of setB) {
+          difference.delete(elem);
+      }
+      return difference;
+    }
+
+    function update() {
+      let a = new Set();
+      for (let line of setA.value.split('\n')) {
+        if (line !== "") {
+          a.add(line);
+        }
+      }
+      let b = new Set();
+      for (let line of setB.value.split('\n')) {
+        if (line !== "") {
+          b.add(line);
+        }
+      }
+      onlyA.value = Array.from(difference(a, b)).join('\n');
+      intersectionAB.value = Array.from(intersection(a, b)).join('\n');
+      onlyB.value = Array.from(difference(b, a)).join('\n');
+    }
+
+    function StartUp() {
+      setA = document.getElementById('set-a');
+      setB = document.getElementById('set-b');
+      onlyA = document.getElementById('only-a');
+      intersectionAB = document.getElementById('intersection');
+      onlyB = document.getElementById('only-b');
+      setA.addEventListener('input', update);
+      setB.addEventListener('input', update);
+    }
+
+  </script>
+</head>
+<body onLoad="StartUp()">
+  <div id="input">
+    <div>
+      <h2>Set A</h2>
+      <textarea id="set-a" cols="20" rows="10"></textarea>
+    </div>
+    <div>
+      <h2>Set B</h2>
+      <textarea id="set-b" cols="20" rows="10"></textarea>
+    </div>
+  </div>
+  <div id="output">
+    <div>
+      <h2>A ⋂ <span class="overline">B</span></h2>
+      <textarea readonly id="only-a" cols="20" rows="10"></textarea>
+    </div><div>
+      <h2>A ⋂ B</h2>
+      <textarea readonly id="intersection" cols="20" rows="10"></textarea>
+    </div><div>
+      <h2><span class="overline">A</span> ⋂ B</h2>
+      <textarea readonly id="only-b" cols="20" rows="10"></textarea>
+    </div>
+  </div>
+</body>
+</html>
